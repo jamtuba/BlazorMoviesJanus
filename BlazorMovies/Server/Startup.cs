@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using BlazorMovies.Server.Helpers;
 
 namespace BlazorMovies.Server
 {
@@ -23,6 +24,8 @@ namespace BlazorMovies.Server
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IFileStorageService, AzureStorageService>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

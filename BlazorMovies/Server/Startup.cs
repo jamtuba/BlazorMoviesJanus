@@ -25,6 +25,9 @@ namespace BlazorMovies.Server
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            // Disse 2 bruges hvis billeder skal gemmes i wwwroot i BlazorMovies.Server
+            //services.AddScoped<IFileStorageService, InAppStorageService>();
+            //services.AddHttpContextAccessor();
             services.AddScoped<IFileStorageService, AzureStorageService>();
 
             services.AddControllersWithViews();

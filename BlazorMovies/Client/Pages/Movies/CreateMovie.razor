@@ -1,13 +1,14 @@
 ﻿@page "/movies/create"
 @inject NavigationManager navigationManager
+@inject IMoviesRepository _moviesRepository
 
 <h3>Create Movie</h3>
 
-<MovieForm Movie="Movie" OnValidSubmit="SaveMovie" NotSelectedGenres="NotSelectedGenres"/>
+<MovieForm Movie="movie" OnValidSubmit="SaveMovie" NotSelectedGenres="NotSelectedGenres"/>
 
 @code {
 
-    private Movie Movie = new Movie();
+    private Movie movie = new Movie();
 
     private List<Genre> NotSelectedGenres = new List<Genre>()
     {
@@ -16,12 +17,22 @@
         new Genre(){Id = 3, Name = "Drama"},
     };
 
-    private void SaveMovie()
+    private async Task SaveMovie()
     {
+        try
+        {
+            var movieId = await _moviesRepository.CreateMovie(movie);
+            navigationManager.NavigateTo($"movie/{movieId}/{movie.Title.Replace(" ", "-")}");
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
         // Saving movie...
 
         Console.WriteLine("This works");
         //Console.WriteLine(navigationManager.Uri);
-        //navigationManager.NavigateTo("movie");
+
     }
 }

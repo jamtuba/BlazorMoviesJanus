@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorMovies.Shared.Entities
 {
@@ -11,6 +13,10 @@ namespace BlazorMovies.Shared.Entities
         public string Picture { get; set; }
         [Required]
         public DateTime? DatoOfBirth { get; set; }
+
+        public List<MoviesActors> MoviesActors { get; set; } = new List<MoviesActors>();
+        [NotMapped]
+        public string Character { get; set; }
 
         public override bool Equals(object obj)
         {

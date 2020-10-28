@@ -1,8 +1,7 @@
 ﻿using BlazorMovies.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlazorMovies.Server.Controllers
@@ -16,6 +15,12 @@ namespace BlazorMovies.Server.Controllers
         public GenresController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Genre>>> Get()
+        {
+            return await _context.Genres.ToListAsync();
         }
 
         [HttpPost]

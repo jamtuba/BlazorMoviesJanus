@@ -1,4 +1,5 @@
 ﻿using BlazorMovies.Client.Helpers;
+using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
 using System;
 using System.Threading.Tasks;
@@ -13,6 +14,16 @@ namespace BlazorMovies.Client.Repository
         public MoviesRepository(IHttpService httpService)
         {
             _httpService = httpService;
+        }
+
+        public async Task<IndexPageDTO> GetIndexPageDTO()
+        {
+            var response = await _httpService.Get<IndexPageDTO>(url);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
         }
 
         public async Task<int> CreateMovie(Movie movie)

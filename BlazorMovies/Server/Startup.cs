@@ -30,7 +30,8 @@ namespace BlazorMovies.Server
             //services.AddHttpContextAccessor();
             services.AddScoped<IFileStorageService, AzureStorageService>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options => 
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddRazorPages();
         }
 

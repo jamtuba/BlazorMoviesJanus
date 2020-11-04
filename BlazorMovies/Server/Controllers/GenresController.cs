@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace BlazorMovies.Server.Controllers
@@ -23,6 +24,14 @@ namespace BlazorMovies.Server.Controllers
             return await _context.Genres.ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Genre>> Get(int id)
+        {
+            var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id == id);
+            if(genre == null) { return NotFound(); }
+            return genre;
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Genre genre)
         {
@@ -30,6 +39,15 @@ namespace BlazorMovies.Server.Controllers
             await _context.SaveChangesAsync();
 
             return genre.Id;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Put(Genre genre)
+        {
+            _context.Attach(genre).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

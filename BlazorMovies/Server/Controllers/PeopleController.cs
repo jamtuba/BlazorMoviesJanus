@@ -1,5 +1,7 @@
-﻿using BlazorMovies.Server.Helpers;
+﻿using AutoMapper;
+using BlazorMovies.Server.Helpers;
 using BlazorMovies.Shared.Entities;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,17 +17,27 @@ namespace BlazorMovies.Server.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IFileStorageService _fileStorageService;
+        private readonly IMapper _mapper;
 
-        public PeopleController(ApplicationDbContext context, IFileStorageService fileStorageService)
+        public PeopleController(ApplicationDbContext context, IFileStorageService fileStorageService, IMapper mapper)
         {
             _context = context;
             _fileStorageService = fileStorageService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Person>>> Get()
         {
             return await _context.People.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Person>> Get(int id)
+        {
+            var person = await _context.People.FirstOrDefaultAsync(x => x.Id == id);
+            if(person == null) { return NotFound(); }
+            return person;
         }
 
         [HttpGet("search/{searchText}")]
@@ -51,6 +63,25 @@ namespace BlazorMovies.Server.Controllers
             await _context.SaveChangesAsync();
 
             return person.Id;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Put(Person person)
+        {
+            var personDB = await _context.People.FirstOrDefaultAsync(x => x.Id == person.Id);
+
+            if (person == null) { return NotFound(); }
+
+            personDB = _mapper.Map(person, personDB);
+
+            if (!string.IsNullOrWhiteSpace(person.Picture))
+            {
+                var personPicture = Convert.FromBase64String(person.Picture);
+                personDB.Picture = await _fileStorageService.EditFile(personPicture, "jpg", "people", personDB.Picture);
+            }
+
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

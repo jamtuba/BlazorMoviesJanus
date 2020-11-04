@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using BlazorMovies.Server.Helpers;
+using AutoMapper;
 
 namespace BlazorMovies.Server
 {
@@ -24,6 +25,8 @@ namespace BlazorMovies.Server
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddAutoMapper(typeof(Startup));
 
             // Disse 2 bruges hvis billeder skal gemmes i wwwroot i BlazorMovies.Server
             //services.AddScoped<IFileStorageService, InAppStorageService>();

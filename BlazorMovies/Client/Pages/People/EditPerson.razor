@@ -1,8 +1,14 @@
 ﻿@page "/person/edit/{PersonId:int}"
+@inject IPersonRepository _personRepository
+@inject NavigationManager _navigationManager
 
 <h3>Edit Person</h3>
 
-<PersonForm Person="Person" OnValidSubmit="Edit" />
+@if(Person != null)
+{
+    <PersonForm Person="Person" OnValidSubmit="Edit" />
+}
+
 
 @code {
     [Parameter] public int PersonId { get; set; }
@@ -10,19 +16,14 @@
     Person Person;
 
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
-        Person = new Person()
-        {
-            Name = "Felipe",
-            DatoOfBirth = DateTime.Today,
-            Biography = "something",
-            Picture = ""
-        };
+        Person = await _personRepository.GetPersonById(PersonId);
     }
 
-    private void Edit()
+    private async Task Edit()
     {
-        Console.WriteLine("Editing the person...");
+        await _personRepository.UpdatePerson(Person);
+        _navigationManager.NavigateTo("people");
     }
 }

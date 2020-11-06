@@ -1,5 +1,5 @@
 ﻿@page "/movies/create"
-@inject NavigationManager navigationManager
+@inject NavigationManager _navigationManager
 @inject IMoviesRepository _moviesRepository
 @inject IGenreRepository _genreRepository
 
@@ -26,7 +26,7 @@
         try
         {
             var movieId = await _moviesRepository.CreateMovie(movie);
-            navigationManager.NavigateTo($"movie/{movieId}/{movie.Title.Replace(" ", "-")}");
+            _navigationManager.NavigateTo($"movie/{movieId}/{movie.Title.Replace(" ", "-")}");
         }
         catch (Exception ex)
         {
@@ -36,7 +36,7 @@
         // Saving movie...
 
         Console.WriteLine("This works");
-        //Console.WriteLine(navigationManager.Uri);
+        //Console.WriteLine(_navigationManager.Uri);
 
     }
 }

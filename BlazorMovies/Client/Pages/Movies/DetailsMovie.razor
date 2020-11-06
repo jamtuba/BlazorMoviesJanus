@@ -53,12 +53,12 @@ else
     [Parameter] public int MovieId { get; set; }
     [Parameter] public string MovieName { get; set; }
     private RenderFragment<Genre> linkGenre = (genre) =>@<a href="movies/search?genreId=@genre.Id">@genre.Name</a>;
-DetailsMovieDTO model;
+    DetailsMovieDTO model;
 
-protected async override Task OnInitializedAsync()
-{
-model = await _moviesRepository.GetDetailMovieDTO(MovieId);
-Console.WriteLine($"The Id of the movie is: {MovieId}");
-Console.WriteLine($"The Id of the movie is: {MovieName}");
-}
+    protected async override Task OnInitializedAsync()
+    {
+        model = await _moviesRepository.GetDetailMovieDTO(MovieId);
+        Console.WriteLine($"The Id of the movie is: {MovieId}");
+        Console.WriteLine($"The Id of the movie is: {MovieName}");
+    }
 }

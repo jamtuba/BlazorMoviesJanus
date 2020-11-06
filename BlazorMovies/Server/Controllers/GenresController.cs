@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace BlazorMovies.Server.Controllers
@@ -49,5 +48,20 @@ namespace BlazorMovies.Server.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var genre = _context.Genres.FirstOrDefaultAsync(x => x.Id == id);
+            if(genre == null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(genre);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
     }
 }

@@ -1,6 +1,6 @@
-﻿@* Modification from Chris Sainty´s typeahead component *@
+﻿@*Modification from Chris Sainty's typeahead component*@
 
-@using System.Timers;
+@using System.Timers
 @typeparam TItem
 
 <div class="blazored-typeahead">
@@ -29,8 +29,7 @@
             {
                 <div @key="item" class="blazored-typeahead__result"
                      tabindex="0" @onclick="@(() => SelectSuggestion(item))"
-                     @onmouseover="OnmouseoverSuggestion" @onmouseout="OnmouseoutSuggestion"
-                     >
+                     @onmouseover="OnmouseoverSuggestion" @onmouseout="OnmouseoutSuggestion">
                     @ResultTemplate(item)
                 </div>
             }
@@ -48,7 +47,7 @@
             else
             {
                 <div class="blazored-typeahead__notfound">
-                   No Results Found
+                    No Results Found
                 </div>
             }
         </div>
@@ -76,6 +75,8 @@
         _debounceTimer.Interval = Debounce;
         _debounceTimer.AutoReset = false;
         _debounceTimer.Elapsed += Search;
+
+        base.OnInitialized();
     }
 
     private bool ShowNotFound()
@@ -109,13 +110,13 @@
         {
             _searchText = value;
 
-            if(value.Length == 0)
+            if (value.Length == 0)
             {
                 IsShowingSuggestions = false;
                 _debounceTimer.Stop();
                 Suggestions = new TItem[0];
             }
-            else if(value.Length >= MinimumLength)
+            else if (value.Length >= MinimumLength)
             {
                 _debounceTimer.Stop();
                 _debounceTimer.Start();

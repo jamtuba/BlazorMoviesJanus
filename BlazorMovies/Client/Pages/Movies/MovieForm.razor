@@ -12,7 +12,7 @@
     <div class="form-group">
         <label>In Theaters</label>
         <div>
-            <InputCheckbox @bind-Value="@Movie.InTheaters" />
+            <InputCheckbox @bind-Value="Movie.InTheaters" />
             <ValidationMessage For="@(() => Movie.InTheaters)" />
         </div>
     </div>
@@ -50,7 +50,8 @@
     <div class="form-group">
         <label>Actors:</label>
         <div>
-            <MultipleSelectorTypeahead Context="person" SearchMethod="SearchMethod" SelectedElements="SelectedActors">
+            <MultipleSelectorTypeahead Context="person"
+                                       SearchMethod="SearchMethod" SelectedElements="SelectedActors">
                 <MyResultTemplate>
                     <img style="width: 50px;" src="@person.Picture" />
                     @person.Name
@@ -60,7 +61,6 @@
                 </MyListTemplate>
             </MultipleSelectorTypeahead>
         </div>
-        
     </div>
 
     <button class="btn btn-primary" type="submit">Save Changes</button>
@@ -86,7 +86,7 @@
         if (!string.IsNullOrEmpty(Movie.Poster))
         {
             imageURL = Movie.Poster;
-            Movie.Poster= null;
+            Movie.Poster = null;
         }
     }
 
@@ -110,10 +110,7 @@
         Movie.MoviesActors = SelectedActors
             .Select(x => new MoviesActors { PersonId = x.Id, Character = x.Character }).ToList();
 
-        if (!string.IsNullOrWhiteSpace(Movie.Poster))
-        {
-            imageURL = null;
-        }
+        if (!string.IsNullOrWhiteSpace(Movie.Poster)) { imageURL = null; }
 
         await OnValidSubmit.InvokeAsync(null);
     }

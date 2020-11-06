@@ -72,8 +72,8 @@ namespace BlazorMovies.Server.Controllers
                 {
                     Name = x.Person.Name,
                     Picture = x.Person.Picture,
-                    Character = x.Person.Character,
-                    Id = x.Person.Id
+                    Character = x.Character,
+                    Id = x.PersonId
                 }
             ).ToList();
 
@@ -87,9 +87,9 @@ namespace BlazorMovies.Server.Controllers
             if(movieActionResult.Result is NotFoundResult) { return NotFound(); }
 
             var movieDetailDTO = movieActionResult.Value;
-            var selectedGenreIds = movieDetailDTO.Genres.Select(x => x.Id).ToList();
+            var selectedGenresIds = movieDetailDTO.Genres.Select(x => x.Id).ToList();
             var notSelectedGenres = await _context.Genres
-                .Where(x => !selectedGenreIds.Contains(x.Id))
+                .Where(x => !selectedGenresIds.Contains(x.Id))
                 .ToListAsync();
 
             var model = new MovieUpdateDTO();
@@ -139,7 +139,7 @@ namespace BlazorMovies.Server.Controllers
                 movieDB.Poster = await _fileStorageService.EditFile(moviePoster, "jpg", containerName, movieDB.Poster);
             }
 
-            await _context.Database.ExecuteSqlInterpolatedAsync($"delete from MoviesActors Where MovieId = {movie.Id}; delete from MoviesGenres Where MovieId = {movie.Id}");
+            await _context.Database.ExecuteSqlInterpolatedAsync($"delete from MoviesActors where MovieId = {movie.Id}; delete from MoviesGenres Where MovieId = {movie.Id}");
 
             if (movie.MoviesActors != null)
             {

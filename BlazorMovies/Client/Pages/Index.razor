@@ -7,7 +7,7 @@
     <MoviesList Movies="InTheaters" />
 </div>
 <div>
-    <h3>Upcoming movies</h3>
+    <h3>Upcoming Releases</h3>
     <MoviesList Movies="UpComingReleases" />
 </div>
 
@@ -19,6 +19,6 @@
     {
         var response = await _moviesRepository.GetIndexPageDTO();
         InTheaters = response.InTheaters;
-        UpComingReleases = response.UpComingRealeases;
+        UpComingReleases = response.UpComingReleases;
     }
 }

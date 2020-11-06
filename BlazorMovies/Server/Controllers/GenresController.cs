@@ -52,7 +52,7 @@ namespace BlazorMovies.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var genre = _context.Genres.FirstOrDefaultAsync(x => x.Id == id);
+            var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id == id);
             if(genre == null)
             {
                 return NotFound();
@@ -62,6 +62,5 @@ namespace BlazorMovies.Server.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
-
     }
 }

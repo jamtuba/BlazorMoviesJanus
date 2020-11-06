@@ -8,6 +8,6 @@ namespace BlazorMovies.Shared.DTOs
     public class IndexPageDTO
     {
         public List<Movie> InTheaters { get; set; }
-        public List<Movie> UpComingRealeases { get; set; }
+        public List<Movie> UpComingReleases { get; set; }
     }
 }

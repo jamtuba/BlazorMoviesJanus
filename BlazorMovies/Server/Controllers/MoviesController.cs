@@ -47,7 +47,7 @@ namespace BlazorMovies.Server.Controllers
             var response = new IndexPageDTO()
             {
                 InTheaters = moviesInTheaters,
-                UpComingRealeases = upcomingReleases
+                UpComingReleases = upcomingReleases
             };
 
             return response;
@@ -129,7 +129,7 @@ namespace BlazorMovies.Server.Controllers
         {
             var movieDB = await _context.Movies.FirstOrDefaultAsync(x => x.Id == movie.Id);
 
-            if (movie == null) { return NotFound(); }
+            if (movieDB == null) { return NotFound(); }
 
             movieDB = _mapper.Map(movie, movieDB);
 

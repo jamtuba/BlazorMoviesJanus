@@ -22,7 +22,7 @@
                     <tr>
                         <td>
                             <a class="btn btn-success" href="/person/edit/@item.Id">Edit</a>
-                            <button class="btn btn-danger">Delete</button>
+                            <button class="btn btn-danger" @onclick="@(() => DeletePerson(item.Id))">Delete</button>
                         </td>
                         <td>@item.Name</td>
                     </tr>
@@ -46,5 +46,11 @@
 
             // Error handling
         }
+    }
+
+    private async Task DeletePerson(int id)
+    {
+        await _personRepository.DeletePerson(id);
+        People = await _personRepository.GetPeople();
     }
 }

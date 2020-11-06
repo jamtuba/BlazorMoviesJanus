@@ -27,7 +27,7 @@ namespace BlazorMovies.Client.Repository
             return response.Response;
         }
 
-        public async Task<Genre> GetGenres(int id)
+        public async Task<Genre> GetGenre(int id)
         {
             var response = await _httpService.Get<Genre>($"{url}/{id}");
             if (!response.Success)

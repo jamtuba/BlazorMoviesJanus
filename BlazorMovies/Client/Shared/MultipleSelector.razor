@@ -2,26 +2,27 @@
     <ul class="selectable-ul">
         @foreach (var item in NoSelected)
         {
-            <li @onclick="(() => Select(item))">@item.Value</li>
+            <li @onclick="@(() => Select(item))">@item.Value</li>
         }
     </ul>
     <div class="multiple-selector-buttons">
         <button type="button" @onclick="SelectAll">>></button>
-        <button type="button" @onclick="DeselectAll">@RemoveAllText</button>
+        <button type="button" @onclick="DeselectAll">@removeAllText</button>
     </div>
     <ul class="selectable-ul">
         @foreach (var item in Selected)
         {
-            <li @onclick="(() => Deselect(item))">@item.Value</li>
+            <li @onclick="@(() => Deselect(item))">@item.Value</li>
         }
     </ul>
 </div>
 
 @code {
-    private string RemoveAllText = "<<";
-
-    [Parameter] public List<MultipleSelectorModel> NoSelected { get; set; } = new List<MultipleSelectorModel>();
-    [Parameter] public List<MultipleSelectorModel> Selected { get; set; } = new List<MultipleSelectorModel>();
+    private string removeAllText = "<<";
+    [Parameter]
+    public List<MultipleSelectorModel> NoSelected { get; set; } = new List<MultipleSelectorModel>();
+    [Parameter]
+    public List<MultipleSelectorModel> Selected { get; set; } = new List<MultipleSelectorModel>();
 
     private void Select(MultipleSelectorModel item)
     {

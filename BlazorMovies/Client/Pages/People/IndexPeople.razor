@@ -33,13 +33,16 @@
 </GenericList>
 
 @code {
-    List<Person> People;
+        List<Person> People;
+        PaginationDTO PaginationDTO = new PaginationDTO() { RecordsPerPage = 1};
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            People = await _personRepository.GetPeople();
+            var paginatedResponse = await _personRepository.GetPeople(PaginationDTO);
+            People = paginatedResponse.Response;
+            Console.WriteLine(paginatedResponse.TotalAmountPages);
         }
         catch (Exception ex)
         {
@@ -51,6 +54,7 @@
     private async Task DeletePerson(int id)
     {
         await _personRepository.DeletePerson(id);
-        People = await _personRepository.GetPeople();
+        var paginatedResponse = await _personRepository.GetPeople(PaginationDTO);
+        People = paginatedResponse.Response;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlazorMovies.Client.Repository
@@ -11,6 +12,7 @@ namespace BlazorMovies.Client.Repository
         Task<DetailsMovieDTO> GetDetailMovieDTO(int id);
         Task<IndexPageDTO> GetIndexPageDTO();
         Task<MovieUpdateDTO> GetMovieForUpdate(int id);
+        Task<PaginatedResponse<List<Movie>>> GetMoviesFiletered(FilterMoviesDTO filterMoviesDTO);
         Task UpdateMovie(Movie movie);
     }
 }

@@ -39,8 +39,8 @@ namespace BlazorMovies.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> Get(int id)
         {
-            var person = await _context.People.FirstOrDefaultAsync(x => x.Id == id);
-            if(person == null) { return NotFound(); }
+            var person = await _context.People.Include(x => x.MoviesActors).ThenInclude(x => x.Movie).FirstOrDefaultAsync(x => x.Id == id);
+            if (person == null) { return NotFound(); }
             return person;
         }
 

@@ -1,0 +1,73 @@
+﻿@page "/person/{PersonId:int}"
+@page "/person/{PersonId:int}/{PersonName}"
+@inject IPersonRepository _personRepository
+@inject IMoviesRepository _moviesRepository
+
+@if (model == null)
+{
+    <text>Loading...</text>
+}
+else
+{
+    <h2>@model.Name (@model.DatoOfBirth.Value.ToString("yyyy"))</h2>
+    <img style="width: 200px;" src="@model.Picture" alt="Picture" class="actor-poster" />
+    <h4>Movies: </h4>
+    <MoviesList Movies="actorsMovies" />
+
+    @*for (int i = 0; i < model.MoviesActors.Count(); i++)
+        {
+            if (i < model.MoviesActors.Count - 1)
+            {
+                @model.MoviesActors[i].Movie.Title<text>, </text>
+            }
+            else
+            {
+                @model.MoviesActors[i].Movie.Title
+            }
+        }*@
+
+    @*<text> | </text> <span>@model.Movie.ReleaseDate.Value.ToString("dd MMM yyyy")</span>
+
+        <div style="display: flex">
+            <span style="display: inline-block; margin-right: 5px;"><img src="@model.Movie.Poster" style="width: 225px; height: 315px" /></span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/@model.Movie.Trailer" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div style="margin-top: 10px;">
+            <h3>Summary</h3>
+            <div>
+                <RenderMarkdown MarkdownContent="@model.Movie.Summary" />
+            </div>
+        </div>
+        <div style="margin-top: 10px;">
+            <h3>Actors</h3>
+            <div style="display: flex; flex-direction: column;">
+                @foreach (var actor in model.Actors)
+                {
+                    <div style="margin-bottom: 2px;">
+                        <img style="width: 50px;" src="@actor.Picture" />
+                        <span style="display: inline-block; width: 200px;"><a href="/person/@actor.Id/@actor.Name.Replace(" ","-")">@actor.Name</a></span>
+                        <span style="display: inline-block; width: 45px;">...</span>
+                        <span>@actor.Character</span>
+                    </div>
+                }
+            </div>
+        </div>*@
+}
+
+@code {
+    [Parameter] public int PersonId { get; set; }
+    [Parameter] public string PersonName { get; set; }
+    private List<MoviesActors> moviesActors = new List<MoviesActors>();
+    private List<Movie> actorsMovies = new List<Movie>();
+    Person model;
+
+    protected async override Task OnInitializedAsync()
+    {
+        model = await _personRepository.GetPersonById(PersonId);
+        actorsMovies = model.MoviesActors.Select(x => x.Movie).ToList();
+
+        Console.WriteLine($"The Id of the person is: {PersonId}");
+        Console.WriteLine($"The name of the person is: {PersonName}");
+        Console.WriteLine($"The count of the moviesActors is: {model.MoviesActors.Count}");
+    }
+}

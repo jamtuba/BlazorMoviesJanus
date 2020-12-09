@@ -1,6 +1,7 @@
 ﻿@page "/movie/{MovieId:int}"
 @page "/movie/{MovieId:int}/{MovieName}"
 @inject IMoviesRepository _moviesRepository
+@inject IRatingRepository _ratingRepository 
 
 @if (model == null)
 {
@@ -22,6 +23,8 @@ else
     }
 
     <text> | </text> <span>@model.Movie.ReleaseDate.Value.ToString("dd MMM yyyy")</span>
+    <text> | Average: </text> @model.AverageVote.ToString("0.#") <text>/5 | Your vote:  </text>
+    <Rating MaximumRating="5" SelectedRating="model.UserVote" OnVote="OnVote" />
 
     <div style="display: flex">
         <span style="display: inline-block; margin-right: 5px;"><img src="@model.Movie.Poster" style="width: 225px; height: 315px"/></span>
@@ -58,7 +61,12 @@ else
     protected async override Task OnInitializedAsync()
     {
         model = await _moviesRepository.GetDetailMovieDTO(MovieId);
-        Console.WriteLine($"The Id of the movie is: {MovieId}");
-        Console.WriteLine($"The Id of the movie is: {MovieName}");
+    }
+
+    private async Task OnVote(int selectedRate)
+    {
+        model.UserVote = selectedRate;
+        var movieRating = new MovieRating() { Rate = selectedRate, MovieId = MovieId };
+        await _ratingRepository.Vote(movieRating);
     }
 }

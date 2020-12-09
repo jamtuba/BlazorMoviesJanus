@@ -2,10 +2,11 @@
 @inject NavigationManager _navigationManager
 @inject IMoviesRepository _moviesRepository
 @inject IGenreRepository _genreRepository
+@attribute [Authorize]
 
 <h3>Create Movie</h3>
 
-@if(NotSelectedGenres != null)
+@if (NotSelectedGenres != null)
 {
     <MovieForm Movie="movie" OnValidSubmit="SaveMovie" NotSelectedGenres="NotSelectedGenres" />
 }

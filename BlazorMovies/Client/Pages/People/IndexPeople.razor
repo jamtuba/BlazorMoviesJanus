@@ -68,6 +68,7 @@
 
     private async Task DeletePerson(int id)
     {
+        await _personRepository.DeletePerson(id);
         await LoadPeople();
     }
 }

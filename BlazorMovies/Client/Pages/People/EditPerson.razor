@@ -1,7 +1,7 @@
 ﻿@page "/person/edit/{PersonId:int}"
 @inject IPersonRepository _personRepository
 @inject NavigationManager _navigationManager
-@attribute [Authorize]
+
 
 <h3>Edit Person</h3>
 
@@ -24,7 +24,9 @@
 
     private async Task Edit()
     {
+        
         await _personRepository.UpdatePerson(Person);
         _navigationManager.NavigateTo("people");
+       
     }
 }

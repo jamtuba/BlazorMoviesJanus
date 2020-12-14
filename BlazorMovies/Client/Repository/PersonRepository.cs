@@ -51,6 +51,8 @@ namespace BlazorMovies.Client.Repository
             var response = await _httpService.Put(url, person);
             if (!response.Success)
             {
+                //var error = await response.GetBody();
+                //Console.WriteLine("ERROR: " + error);
                 throw new ApplicationException(await response.GetBody());
             }
         }

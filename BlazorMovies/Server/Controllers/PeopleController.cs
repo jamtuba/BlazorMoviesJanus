@@ -77,18 +77,20 @@ namespace BlazorMovies.Server.Controllers
         {
             var personDB = await _context.People.FirstOrDefaultAsync(x => x.Id == person.Id);
 
-            if (person == null) { return NotFound(); }
+            if (personDB == null) { return NotFound(); }
 
             personDB = _mapper.Map(person, personDB);
 
             if (!string.IsNullOrWhiteSpace(person.Picture))
             {
                 var personPicture = Convert.FromBase64String(person.Picture);
-                personDB.Picture = await _fileStorageService.EditFile(personPicture, "jpg", "people", personDB.Picture);
+                personDB.Picture = await _fileStorageService.EditFile(personPicture,
+                    "jpg", "people", personDB.Picture);
             }
 
             await _context.SaveChangesAsync();
             return NoContent();
+
         }
 
         [HttpDelete("{id}")]

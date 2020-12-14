@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -42,9 +43,9 @@ namespace BlazorMovies.Client.Helpers
 
         public async Task<HttpResponseWrapper<object>> Put<T>(string url, T data)
         {
-            var dataJson = JsonSerializer.Serialize(data);
-            var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync(url, stringContent);
+            //var dataJson = JsonSerializer.Serialize(data);
+            //var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsJsonAsync(url, data);
             return new HttpResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
         }
 

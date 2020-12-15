@@ -1,4 +1,6 @@
 ﻿using BlazorMovies.Client.Helpers;
+using BlazorMovies.Client.Repository;
+using BlazorMovies.Shared.DTOs;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System;
@@ -16,19 +18,18 @@ namespace BlazorMovies.Client.Auth
     {
         private readonly IJSRuntime _js;
         private readonly HttpClient _httpClient;
-        //private readonly IAccountsRepository _accountsRepository;
+        private readonly IAccountsRepository _accountsRepository;
         private readonly string TOKENKEY = "TOKENKEY";
         private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
 
         private AuthenticationState Anonymous =>
             new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 
-        public JWTAuthenticationStateProvider(IJSRuntime js, HttpClient httpClient/*,*/
-           /* IAccountsRepository usersRepository*/)
+        public JWTAuthenticationStateProvider(IJSRuntime js, HttpClient httpClient, IAccountsRepository accountsRepository)
         {
             _js = js;
             _httpClient = httpClient;
-            //_accountsRepository = usersRepository;
+            _accountsRepository = accountsRepository;
         }
 
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -41,21 +42,21 @@ namespace BlazorMovies.Client.Auth
             }
 
             var expirationTimeString = await _js.GetFromLocalStorage(EXPIRATIONTOKENKEY);
-            //DateTime expirationTime;
+            DateTime expirationTime;
 
-            //if (DateTime.TryParse(expirationTimeString, out expirationTime))
-            //{
-            //    if (IsTokenExpired(expirationTime))
-            //    {
-            //        await CleanUp();
-            //        return Anonymous;
-            //    }
+            if (DateTime.TryParse(expirationTimeString, out expirationTime))
+            {
+                if (IsTokenExpired(expirationTime))
+                {
+                    await CleanUp();
+                    return Anonymous;
+                }
 
-            //    //if (ShouldRenewToken(expirationTime))
-            //    //{
-            //    //    token = await RenewToken(token);
-            //    //}
-            //}
+                if (ShouldRenewToken(expirationTime))
+                {
+                    token = await RenewToken(token);
+                }
+            }
 
             return BuildAuthenticationState(token);
         }
@@ -72,28 +73,28 @@ namespace BlazorMovies.Client.Auth
                     await Logout();
                 }
 
-                //if (ShouldRenewToken(expirationTime))
-                //{
-                //    var token = await _js.GetFromLocalStorage(TOKENKEY);
-                //    //var newToken = await RenewToken(token);
-                //    //var authState = BuildAuthenticationState(newToken);
-                //    NotifyAuthenticationStateChanged(Task.FromResult(authState));
-                //}
+                if (ShouldRenewToken(expirationTime))
+                {
+                    var token = await _js.GetFromLocalStorage(TOKENKEY);
+                    var newToken = await RenewToken(token);
+                    var authState = BuildAuthenticationState(newToken);
+                    NotifyAuthenticationStateChanged(Task.FromResult(authState));
+                }
             }
         }
 
-        //private async Task<string> RenewToken(string token)
-        //{
-        //    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-        //    var newToken = await _accountsRepository.RenewToken();
-        //    await _js.SetInLocalStorage(TOKENKEY, newToken.Token);
-        //    await _js.SetInLocalStorage(EXPIRATIONTOKENKEY, newToken.Expiration.ToString());
-        //    return newToken.Token;
-        //}
+        private async Task<string> RenewToken(string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            var newToken = await _accountsRepository.RenewToken();
+            await _js.SetInLocalStorage(TOKENKEY, newToken.Token);
+            await _js.SetInLocalStorage(EXPIRATIONTOKENKEY, newToken.Expiration.ToString());
+            return newToken.Token;
+        }
 
         private bool ShouldRenewToken(DateTime expirationTime)
         {
-            return expirationTime.Subtract(DateTime.UtcNow) < TimeSpan.FromMinutes(5);
+            return expirationTime.Subtract(DateTime.UtcNow) < TimeSpan.FromMinutes(5); // 5 minutes
         }
 
         private bool IsTokenExpired(DateTime expirationTime)
@@ -153,11 +154,11 @@ namespace BlazorMovies.Client.Auth
             return Convert.FromBase64String(base64);
         }
 
-        public async Task Login(string userToken)
+        public async Task Login(UserToken userToken)
         {
-            await _js.SetInLocalStorage(TOKENKEY, userToken/*.Token*/);
-            //await _js.SetInLocalStorage(EXPIRATIONTOKENKEY, userToken.Expiration.ToString());
-            var authState = BuildAuthenticationState(userToken/*.Token*/);
+            await _js.SetInLocalStorage(TOKENKEY, userToken.Token);
+            await _js.SetInLocalStorage(EXPIRATIONTOKENKEY, userToken.Expiration.ToString());
+            var authState = BuildAuthenticationState(userToken.Token);
             NotifyAuthenticationStateChanged(Task.FromResult(authState));
         }
 

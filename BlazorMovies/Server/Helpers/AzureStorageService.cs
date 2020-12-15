@@ -2,10 +2,7 @@
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlazorMovies.Server.Helpers
@@ -36,7 +33,7 @@ namespace BlazorMovies.Server.Helpers
             {
                 await DeleteFile(fileRoute, containerName);
             }
-            
+
             return await SaveFile(content, extension, containerName);
         }
 

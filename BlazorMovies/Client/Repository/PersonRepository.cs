@@ -10,7 +10,7 @@ namespace BlazorMovies.Client.Repository
     public class PersonRepository : IPersonRepository
     {
         private readonly IHttpService _httpService;
-        private string url = "api/people";
+        private string _url = "api/people";
 
         public PersonRepository(IHttpService httpService)
         {
@@ -19,12 +19,12 @@ namespace BlazorMovies.Client.Repository
 
         public async Task<PaginatedResponse<List<Person>>> GetPeople(PaginationDTO paginationDTO)
         {
-            return await _httpService.GetHelper<List<Person>>(url, paginationDTO);
+            return await _httpService.GetHelper<List<Person>>(_url, paginationDTO);
         }
 
         public async Task<List<Person>> GetPeopleByName(string name)
         {
-            var response = await _httpService.Get<List<Person>>($"{url}/search/{name}");
+            var response = await _httpService.Get<List<Person>>($"{_url}/search/{name}");
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
@@ -34,12 +34,12 @@ namespace BlazorMovies.Client.Repository
 
         public async Task<Person> GetPersonById(int id)
         {
-            return await _httpService.GetHelper<Person>($"{url}/{id}");
+            return await _httpService.GetHelper<Person>($"{_url}/{id}");
         }
 
         public async Task CreatePerson(Person person)
         {
-            var response = await _httpService.Post(url, person);
+            var response = await _httpService.Post(_url, person);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
@@ -48,7 +48,7 @@ namespace BlazorMovies.Client.Repository
 
         public async Task UpdatePerson(Person person)
         {
-            var response = await _httpService.Put(url, person);
+            var response = await _httpService.Put(_url, person);
             if (!response.Success)
             {
                 //var error = await response.GetBody();
@@ -59,7 +59,7 @@ namespace BlazorMovies.Client.Repository
 
         public async Task DeletePerson(int id)
         {
-            var response = await _httpService.Delete($"{url}/{id}");
+            var response = await _httpService.Delete($"{_url}/{id}");
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

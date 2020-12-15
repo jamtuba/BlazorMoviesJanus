@@ -17,7 +17,7 @@ namespace BlazorMovies.Shared.Entities
         public string Poster { get; set; }
         public List<MoviesGenres> MoviesGenres { get; set; } = new List<MoviesGenres>();
         public List<MoviesActors> MoviesActors { get; set; } = new List<MoviesActors>();
-        public string TitleBrief 
+        public string TitleBrief
         {
             get
             {
@@ -26,7 +26,7 @@ namespace BlazorMovies.Shared.Entities
                     return null;
                 }
 
-                if(Title.Length > 60)
+                if (Title.Length > 60)
                 {
                     return Title.Substring(0, 60) + "...";
                 }

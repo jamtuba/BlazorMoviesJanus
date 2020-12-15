@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -15,7 +13,7 @@ namespace BlazorMovies.Client.Auth
                 new Claim("key1", "value1"),
                 new Claim(ClaimTypes.Name, "Janus"),
                 new Claim(ClaimTypes.Role, "Admin")
-            }, 
+            },
                 "test");
             return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(anonymous)));
         }

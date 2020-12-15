@@ -31,7 +31,8 @@ namespace BlazorMovies.Server.Controllers
         public async Task<ActionResult<Genre>> Get(int id)
         {
             var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id == id);
-            if(genre == null) { return NotFound(); }
+            if (genre == null)
+            { return NotFound(); }
             return genre;
         }
 
@@ -57,7 +58,7 @@ namespace BlazorMovies.Server.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id == id);
-            if(genre == null)
+            if (genre == null)
             {
                 return NotFound();
             }

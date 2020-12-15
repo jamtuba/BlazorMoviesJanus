@@ -20,7 +20,7 @@ namespace BlazorMovies.Shared.Entities
 
         public override bool Equals(object obj)
         {
-            if(obj is Person p2)
+            if (obj is Person p2)
             {
                 return Id == p2.Id;
             }

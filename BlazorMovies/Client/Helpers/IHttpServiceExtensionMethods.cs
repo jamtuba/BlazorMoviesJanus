@@ -1,6 +1,5 @@
 ﻿using BlazorMovies.Shared.DTOs;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +22,7 @@ namespace BlazorMovies.Client.Helpers
             string newURL = "";
             if (url.Contains("?"))
             {
-                newURL = $"{url}&page={paginationDTO.Page}&recordsPerPage={paginationDTO.RecordsPerPage}"; 
+                newURL = $"{url}&page={paginationDTO.Page}&recordsPerPage={paginationDTO.RecordsPerPage}";
             }
             else
             {
@@ -38,7 +37,7 @@ namespace BlazorMovies.Client.Helpers
             };
 
             return paginatedResponse;
-            
+
         }
     }
 }

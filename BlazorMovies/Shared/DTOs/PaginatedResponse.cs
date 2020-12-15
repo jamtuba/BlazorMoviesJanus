@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BlazorMovies.Shared.DTOs
+﻿namespace BlazorMovies.Shared.DTOs
 {
     public class PaginatedResponse<T>
     {

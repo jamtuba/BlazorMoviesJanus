@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlazorMovies.Client.Helpers
 {
-    public class HttpService :IHttpService
+    public class HttpService : IHttpService
     {
         private readonly HttpClient _httpClient;
         private JsonSerializerOptions DefaultJsonSerializerOptions =>
@@ -74,7 +74,7 @@ namespace BlazorMovies.Client.Helpers
         public async Task<HttpResponseWrapper<object>> Delete(string url)
         {
             var responseHTTP = await _httpClient.DeleteAsync(url);
-            
+
             return new HttpResponseWrapper<object>(null, responseHTTP.IsSuccessStatusCode, responseHTTP);
 
         }

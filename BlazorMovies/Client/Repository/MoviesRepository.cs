@@ -20,7 +20,7 @@ namespace BlazorMovies.Client.Repository
 
         public async Task<IndexPageDTO> GetIndexPageDTO()
         {
-            return await _httpService.GetHelper<IndexPageDTO>(url); 
+            return await _httpService.GetHelper<IndexPageDTO>(url);
         }
 
         public async Task<MovieUpdateDTO> GetMovieForUpdate(int id)

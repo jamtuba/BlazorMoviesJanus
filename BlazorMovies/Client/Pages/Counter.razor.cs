@@ -1,11 +1,6 @@
-﻿using BlazorMovies.Shared.Entities;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using static BlazorMovies.Client.Shared.MainLayout;
 
 namespace BlazorMovies.Client.Pages
 {
@@ -28,7 +23,7 @@ namespace BlazorMovies.Client.Pages
             {
                 currentCount--;
             }
-            
+
         }
     }
 }

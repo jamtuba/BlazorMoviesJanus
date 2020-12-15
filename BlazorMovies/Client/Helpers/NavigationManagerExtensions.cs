@@ -9,7 +9,7 @@ namespace BlazorMovies.Client.Helpers
     {
         public static Dictionary<string, string> GetQueryStrings(this NavigationManager navigationManager, string url)
         {
-            if(string.IsNullOrWhiteSpace(url) || !url.Contains("?") || url.Substring(url.Length - 1) == "?")
+            if (string.IsNullOrWhiteSpace(url) || !url.Contains("?") || url.Substring(url.Length - 1) == "?")
             {
                 return null;
             }

@@ -1,6 +1,4 @@
 ﻿using BlazorMovies.Client.Helpers;
-using BlazorMovies.Client.Repository;
-using BlazorMovies.Shared.DTOs;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System;
@@ -8,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -146,8 +143,12 @@ namespace BlazorMovies.Client.Auth
         {
             switch (base64.Length % 4)
             {
-                case 2: base64 += "=="; break;
-                case 3: base64 += "="; break;
+                case 2:
+                    base64 += "==";
+                    break;
+                case 3:
+                    base64 += "=";
+                    break;
             }
             return Convert.FromBase64String(base64);
         }

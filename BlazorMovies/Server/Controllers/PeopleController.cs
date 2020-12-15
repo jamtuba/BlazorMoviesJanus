@@ -4,7 +4,6 @@ using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,46 +15,48 @@ namespace BlazorMovies.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class PeopleController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly IFileStorageService _fileStorageService;
         private readonly IMapper _mapper;
 
-        public PeopleController(ApplicationDbContext context, IFileStorageService fileStorageService, IMapper mapper)
+        public PeopleController(ApplicationDbContext context,
+            IFileStorageService fileStorageService,
+            IMapper mapper)
         {
-            _context = context;
-            _fileStorageService = fileStorageService;
-            _mapper = mapper;
+            this._context = context;
+            this._fileStorageService = fileStorageService;
+            this._mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Person>>> Get([FromQuery]PaginationDTO paginationDTO)
+        public async Task<ActionResult<List<Person>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             var queryable = _context.People.AsQueryable();
             await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
-
             return await queryable.Paginate(paginationDTO).ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> Get(int id)
         {
-            var person = await _context.People.Include(x => x.MoviesActors).ThenInclude(x => x.Movie).FirstOrDefaultAsync(x => x.Id == id);
-            if (person == null) { return NotFound(); }
+            var person = await _context.People.FirstOrDefaultAsync(x => x.Id == id);
+            if (person == null)
+            { return NotFound(); }
             return person;
         }
 
         [HttpGet("search/{searchText}")]
         public async Task<ActionResult<List<Person>>> FilterByName(string searchText)
         {
-            if (string.IsNullOrWhiteSpace(searchText)) { new List<Person>(); }
+            if (string.IsNullOrWhiteSpace(searchText))
+            { return new List<Person>(); }
             return await _context.People.Where(x => x.Name.Contains(searchText))
                 .Take(5)
                 .ToListAsync();
         }
-
 
         [HttpPost]
         public async Task<ActionResult<int>> Post(Person person)
@@ -68,7 +69,6 @@ namespace BlazorMovies.Server.Controllers
 
             _context.Add(person);
             await _context.SaveChangesAsync();
-
             return person.Id;
         }
 
@@ -77,7 +77,8 @@ namespace BlazorMovies.Server.Controllers
         {
             var personDB = await _context.People.FirstOrDefaultAsync(x => x.Id == person.Id);
 
-            if (personDB == null) { return NotFound(); }
+            if (personDB == null)
+            { return NotFound(); }
 
             personDB = _mapper.Map(person, personDB);
 

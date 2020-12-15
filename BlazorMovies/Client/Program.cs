@@ -1,13 +1,12 @@
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 using BlazorMovies.Client.Auth;
 using BlazorMovies.Client.Helpers;
 using BlazorMovies.Client.Repository;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.JSInterop;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Tewr.Blazor.FileReader;
 
 namespace BlazorMovies.Client

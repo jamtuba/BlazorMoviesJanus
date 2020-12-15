@@ -69,12 +69,13 @@ namespace BlazorMovies.Server.Controllers
                 .Include(x => x.MoviesActors).ThenInclude(x => x.Person)
                 .FirstOrDefaultAsync();
 
-            if(movie == null) { return NotFound(); }
+            if (movie == null)
+            { return NotFound(); }
 
             var voteAverage = 0.0;
             var uservote = 0;
 
-            if(await _context.MovieRatings.AnyAsync(x => x.MovieId == id))
+            if (await _context.MovieRatings.AnyAsync(x => x.MovieId == id))
             {
                 voteAverage = await _context.MovieRatings.Where(x => x.MovieId == id)
                     .AverageAsync(x => x.Rate);
@@ -87,7 +88,7 @@ namespace BlazorMovies.Server.Controllers
                     var userVoteDB = await _context.MovieRatings
                         .FirstOrDefaultAsync(x => x.MovieId == id && x.UserId == userId);
 
-                    if(userVoteDB != null)
+                    if (userVoteDB != null)
                     {
                         uservote = userVoteDB.Rate;
                     }
@@ -100,12 +101,12 @@ namespace BlazorMovies.Server.Controllers
             model.Movie = movie;
             model.Genres = movie.MoviesGenres.Select(x => x.Genre).ToList();
             model.Actors = movie.MoviesActors.Select(x => new Person
-                {
-                    Name = x.Person.Name,
-                    Picture = x.Person.Picture,
-                    Character = x.Character,
-                    Id = x.PersonId
-                }
+            {
+                Name = x.Person.Name,
+                Picture = x.Person.Picture,
+                Character = x.Character,
+                Id = x.PersonId
+            }
             ).ToList();
 
             model.UserVote = uservote;
@@ -138,7 +139,7 @@ namespace BlazorMovies.Server.Controllers
                 moviesQueryable = moviesQueryable.Where(x => x.ReleaseDate > today);
             }
 
-            if(filterMoviesDTO.GenreId != 0)
+            if (filterMoviesDTO.GenreId != 0)
             {
                 moviesQueryable = moviesQueryable
                     .Where(x => x.MoviesGenres.Select(y => y.GenreId)
@@ -156,7 +157,8 @@ namespace BlazorMovies.Server.Controllers
         public async Task<ActionResult<MovieUpdateDTO>> PutGet(int id)
         {
             var movieActionResult = await Get(id);
-            if(movieActionResult.Result is NotFoundResult) { return NotFound(); }
+            if (movieActionResult.Result is NotFoundResult)
+            { return NotFound(); }
 
             var movieDetailDTO = movieActionResult.Value;
             var selectedGenresIds = movieDetailDTO.Genres.Select(x => x.Id).ToList();
@@ -182,7 +184,7 @@ namespace BlazorMovies.Server.Controllers
                 movie.Poster = await _fileStorageService.SaveFile(poster, "jpg", containerName);
             }
 
-            if(movie.MoviesActors != null)
+            if (movie.MoviesActors != null)
             {
                 for (int i = 0; i < movie.MoviesActors.Count; i++)
                 {
@@ -201,7 +203,8 @@ namespace BlazorMovies.Server.Controllers
         {
             var movieDB = await _context.Movies.FirstOrDefaultAsync(x => x.Id == movie.Id);
 
-            if (movieDB == null) { return NotFound(); }
+            if (movieDB == null)
+            { return NotFound(); }
 
             movieDB = _mapper.Map(movie, movieDB);
 

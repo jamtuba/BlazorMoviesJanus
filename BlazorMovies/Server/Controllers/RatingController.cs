@@ -32,7 +32,7 @@ namespace BlazorMovies.Server.Controllers
             var currentRating = await _context.MovieRatings
                 .FirstOrDefaultAsync(x => x.MovieId == movieRating.MovieId && x.UserId == userId);
 
-            if(currentRating == null)
+            if (currentRating == null)
             {
                 movieRating.UserId = userId;
                 movieRating.RatingDate = DateTime.Today;

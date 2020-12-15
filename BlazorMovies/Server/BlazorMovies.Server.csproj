@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20201207180722_IdentityTables.cs" />
     <Compile Remove="Migrations\20201207180722_IdentityTables.Designer.cs" />
+    <Compile Remove="Migrations\20201215151018_TestFixer.cs" />
+    <Compile Remove="Migrations\20201215151018_TestFixer.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

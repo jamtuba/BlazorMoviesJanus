@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject BlazorMovies.Client.Auth.TokenRenewer _tokenRenewer
+@*@inject BlazorMovies.Client.Auth.TokenRenewer _tokenRenewer*@
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _js
 
@@ -24,7 +24,7 @@
     protected async override Task OnInitializedAsync()
     {
         await _js.InitializeInactivityTimer(DotNetObjectReference.Create(this));
-        _tokenRenewer.Initiate();
+        //_tokenRenewer.Initiate();
     }
 
     [JSInvokable]

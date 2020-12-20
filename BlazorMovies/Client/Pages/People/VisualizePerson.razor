@@ -1,7 +1,7 @@
 ﻿@page "/person/{PersonId:int}"
 @page "/person/{PersonId:int}/{PersonName}"
 @inject IPersonRepository _personRepository
-@inject IMoviesRepository _moviesRepository
+@inject IMoviesRepository _moviesRepository 
 
 @if (model == null)
 {
@@ -64,10 +64,73 @@ else
     protected async override Task OnInitializedAsync()
     {
         model = await _personRepository.GetPersonById(PersonId);
-        actorsMovies = model.MoviesActors.Select(x => x.Movie).ToList();
+        var response = await _moviesRepository.GetIndexPageDTO();
+
+        if(response != null)
+        {
+            var result = response.InTheaters.Concat(response.UpComingReleases).ToList();
+
+            List<DetailsMovieDTO> allMovies = new List<DetailsMovieDTO>();
+
+            foreach (var item in result)
+            {
+                allMovies.Add(await _moviesRepository.GetDetailMovieDTO(item.Id));
+            }
+
+            var actors = allMovies.SelectMany(x => x.Actors).ToList();
+
+
+
+            Console.WriteLine("reult count: " + result.Count());
+
+            foreach (var item in response.InTheaters)
+            {
+                Console.WriteLine("Movies inthearters: " + item.Title);
+                Console.WriteLine("Movies inthearters ID: " + item.Id);
+                Console.WriteLine("Movies inthearters actor: " + item.MoviesActors.FirstOrDefault());
+                Console.WriteLine("Movies inthearters in theaters: " + item.InTheaters);
+                Console.WriteLine("Movies inthearters genres: " + item.MoviesGenres.FirstOrDefault());
+            }
+            foreach (var item in response.UpComingReleases)
+            {
+                Console.WriteLine("Movies Upcoming: " + item.Title);
+            }
+
+            var mo = result.Where(x => x.MoviesActors.Any()).ToList();
+
+            Console.WriteLine("mo : " + mo.Count());
+
+            var MA = response.InTheaters.Select(x => x.MoviesActors).SelectMany(y => y).ToList();
+            var MA2 = response.UpComingReleases.Select(x => x.MoviesActors).SelectMany(y => y).ToList();
+
+            List<MoviesActors> M = MA.Concat(MA2).ToList();
+
+            Console.WriteLine("List count: " + M.Count());
+
+            if (M != null)
+            {
+                foreach (var actor in M)
+                {
+                    Console.WriteLine("actor: " + actor.Movie);
+                    if (actor.PersonId == PersonId)
+                    {
+                        Console.WriteLine("Person: " + actor.Person.Name);
+                        actorsMovies.Add(actor.Movie);
+                    }
+                }
+            }
+        }
+
+
+        //List<MoviesActors> M = MA.AddRange(MA2);
+
+        //var result2 = MA.Where(x => x.Contains(PersonId));
+        //var result = response.InTheaters.Where(x => x.MoviesActors.Select(x => x.PersonId == PersonId).ToList());
+
+        //actorsMovies = response.InTheaters.Join(response.UpComingReleases.Where(x => x.MoviesActors.Contains));
 
         Console.WriteLine($"The Id of the person is: {PersonId}");
         Console.WriteLine($"The name of the person is: {PersonName}");
-        Console.WriteLine($"The count of the moviesActors is: {model.MoviesActors.Count}");
+        Console.WriteLine($"The count of the moviesActors is: {actorsMovies.Count}");
     }
 }

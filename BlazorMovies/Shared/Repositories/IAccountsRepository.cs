@@ -1,7 +1,7 @@
 ﻿using BlazorMovies.Shared.DTOs;
 using System.Threading.Tasks;
 
-namespace BlazorMovies.Client.Repository
+namespace BlazorMovies.Shared.Repositories
 {
     public interface IAccountsRepository
     {

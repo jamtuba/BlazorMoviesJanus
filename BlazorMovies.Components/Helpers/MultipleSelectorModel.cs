@@ -1,4 +1,4 @@
-﻿namespace BlazorMovies.Client.Helpers
+﻿namespace BlazorMovies.Components.Helpers
 {
     public struct MultipleSelectorModel
     {

@@ -1,6 +1,6 @@
 ﻿@page "/genres/"
 @inject IGenreRepository _genreRepository
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Admin")]
 
 <h3>Index Genres</h3>
 

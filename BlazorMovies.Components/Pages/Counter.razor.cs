@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Threading.Tasks;
 
-namespace BlazorMovies.Client.Pages
+namespace BlazorMovies.Components.Pages
 {
     public partial class Counter
     {

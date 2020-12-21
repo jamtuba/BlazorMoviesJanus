@@ -2,6 +2,8 @@
 
 <h3>RoutableComponent</h3>
 
-@code {
+The Value is: @Value
 
+@code {
+    [CascadingParameter(Name = "Value")] public int Value { get; set; }
 }

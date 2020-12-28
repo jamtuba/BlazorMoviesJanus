@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BlazorMovies.SharedBackend\BlazorMovies.SharedBackend.csproj" />
     <ProjectReference Include="..\Client\BlazorMovies.Client.csproj" />
     <ProjectReference Include="..\Shared\BlazorMovies.Shared.csproj" />
   </ItemGroup>

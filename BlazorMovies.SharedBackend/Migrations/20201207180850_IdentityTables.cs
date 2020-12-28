@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace BlazorMovies.Server.Migrations
+namespace BlazorMovies.SharedBackend.Migrations
 {
     public partial class IdentityTables : Migration
     {

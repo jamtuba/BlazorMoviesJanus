@@ -7,15 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20201207180722_IdentityTables.cs" />
-    <Compile Remove="Migrations\20201207180722_IdentityTables.Designer.cs" />
-    <Compile Remove="Migrations\20201215151018_TestFixer.cs" />
-    <Compile Remove="Migrations\20201215151018_TestFixer.Designer.cs" />
-    <Compile Remove="Migrations\20201220163849_AdminUser.cs" />
-    <Compile Remove="Migrations\20201220163849_AdminUser.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.4" />

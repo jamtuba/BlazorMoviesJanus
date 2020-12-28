@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BlazorMovies.Server.Migrations
+namespace BlazorMovies.SharedBackend.Migrations
 {
     public partial class AdminRole : Migration
     {

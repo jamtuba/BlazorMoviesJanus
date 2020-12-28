@@ -1,5 +1,6 @@
 using AutoMapper;
 using BlazorMovies.Server.Helpers;
+using BlazorMovies.SharedBackend;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -42,7 +43,7 @@ namespace BlazorMovies.Server
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
-                 .AddApiAuthorization<IdentityUser, ApplicationDbContext>()
+                 //.AddApiAuthorization<IdentityUser, ApplicationDbContext>()
                  .AddProfileService<IdentityProfileService>();
 
             services.AddAuthentication()
